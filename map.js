@@ -105,16 +105,16 @@ document.getElementById('05').addEventListener('click', function() {
     }).addTo(map);
 });
 
-var storm1 = 'https://www.youtube.com/watch?v=668nUCeBHyY&pp=ygULc21hbGwgdmlkZW8%3D';
-var points1 = L.latLngBounds([[41.315, -1.911], [51.907, 31.289]]);
-var storm2 = 'https://www.dropbox.com/scl/fi/iermje3f1ek6p2jnydo4q/Unsaved_session_2023-07-24_00_00-2023-07-25_15_45.mp4?rlkey=4owys51idp2dj8y9646dullnt&st=8f1c0p8b&dl=0';
-var points2 = L.latLngBounds([[41.300, -8.155], [51.895, 25.046]]);
-var storm3 = 'https://www.dropbox.com/scl/fi/vm3l4pv6fyo8ygm7qujq9/Unsaved_session_2023-07-11_02_30-2023-07-13_11_00.mp4?rlkey=a6x3u76myfes98qwkg67wqkpg&st=cpzgezze&dl=0';
-var points3 = L.latLngBounds([[41.104, -6.695], [51.734, 26.506]]);
-var vid1, vid2, vid3;
+// var storm1 = '';
+// var points1 = L.latLngBounds([[41.315, -1.911], [51.907, 31.289]]);
+// var storm2 = 'media/Unsaved_session_2023-07-19_16_00-2023-07-20_05_00 (1).mp4';
+// var points2 = L.latLngBounds([[41.300, -8.155], [51.895, 25.046]]);
+// var storm3 = 'media/Unsaved_session_2023-07-24_00_00-2023-07-25_15_45.mp4';
+// var points3 = L.latLngBounds([[41.104, -6.695], [51.734, 26.506]]);
+// var vid1, vid2, vid3;
 document.getElementById('06').addEventListener('click', function() {
     document.getElementById('text').innerHTML = '<h1>06</h1><a href="#" id="link-one"><h2 id="one">one</h2></a><a href="#" id="link-one"><h2 id="two">two</h2></a><a href="#" id="link-one"><h2 id="three">three</h2></a>';
-    map.flyTo([51, 31], 8);
+    map.flyTo([41, -1], 5);
     document.getElementById('progress-bar').style.width = '0%';
     vid1 = L.videoOverlay(storm1, points1, {
         opacity: 0.6,
