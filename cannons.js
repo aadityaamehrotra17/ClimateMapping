@@ -1,11 +1,11 @@
-var cannons = {
+export const cannons = {
     "type": "FeatureCollection",
     "features": [
         {
             "type": "Feature",
             "id": "0",
             "properties": {
-                "name": "Arzignano",
+                "name": "Arzignullo",
                 "province": "Vicenza",
                 "cannons": 200
             },
@@ -28,8 +28,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -85,7 +85,7 @@ var cannons = {
             "type": "Feature",
             "id": "5",
             "properties": {
-                "name": "Arcugnano",
+                "name": "Arcugnullo",
                 "province": "Vicenza",
                 "cannons": 34
             },
@@ -188,8 +188,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -236,8 +236,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -300,8 +300,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -412,8 +412,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -572,8 +572,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -620,8 +620,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -636,8 +636,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -668,8 +668,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -732,8 +732,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -764,8 +764,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -860,8 +860,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -924,8 +924,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -940,8 +940,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -956,8 +956,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -972,8 +972,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1036,8 +1036,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1052,8 +1052,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1068,8 +1068,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1148,8 +1148,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1180,8 +1180,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1212,8 +1212,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1260,8 +1260,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1276,8 +1276,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1308,8 +1308,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1324,8 +1324,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1340,8 +1340,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1388,8 +1388,8 @@ var cannons = {
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    NaN,
-                    NaN
+                    null,
+                    null
                 ]
             }
         },
@@ -1411,4 +1411,3 @@ var cannons = {
         }
     ]
 };
-export { cannons };
