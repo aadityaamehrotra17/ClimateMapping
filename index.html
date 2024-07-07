@@ -9,6 +9,7 @@
     crossorigin=""/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Leaflet.Rainviewer-master/leaflet.rainviewer.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -29,18 +30,19 @@
         <div class="map-column">
             <div class="map-container">
                 <div id="map"></div>
+                <div class="leaflet-spotlight-container circle" id="torch"></div>
             </div>
         </div>
         <div class="text-column">
             <div id="progress-bar"></div>
             <div id='text' class="text-container">
-                <h1 id="heading" class="montserrat-h1">Climate Mapping</h1>
-                <a href="#" id="link-1"><h2 id="sub-heading-1" class="montserrat-h2">Intro</h2></a>
-                <p class="montserrat-p" id="para-1">Lorem ipsum dolor sit amet, <a id="unique">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem. Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p>
-                <a href="#" id="link-2"><h2 id="sub-heading-2" class="montserrat-h2">Mid</h2></a>
-                <p class="montserrat-p" id="para-2">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada. Mauris pellentesque pulvinar pellentesque habitant.</p>
-                <a href="#" id="link-3"><h2 id="sub-heading-3" class="montserrat-h2">End</h2></a>
-                <p class="montserrat-p" id="para-3">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>
+                <h1 class="montserrat-h1 heading">Climate Mapping</h1>
+                <h2 class="montserrat-h2 sub-heading"><a class="link" id="link-1">Intro</a></h2>
+                <p class="montserrat-p paragraph">Lorem ipsum dolor sit amet, <a class="link" id="link-2">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem. Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p>
+                <h2 class="montserrat-h2 sub-heading"><a class="link" id="link-3">Mid</a></h2>
+                <p class="montserrat-p paragraph">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada. Mauris pellentesque pulvinar pellentesque habitant.</p>
+                <h2 class="montserrat-h2 sub-heading"><a class="link" id="link-4">End</a></h2>
+                <p class="montserrat-p paragraph">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>
             </div>
             <div class="navigation-buttons">
                 <button id="prev"><i class="fa fa-arrow-left"></i></button>
@@ -54,5 +56,6 @@
     <script type="module" src="map.js"></script>
     <script src="menu.js"></script>
     <script src="progress.js"></script>
+    <script src="Leaflet.Rainviewer-master/leaflet.rainviewer.js"></script>
 </body>
 </html>

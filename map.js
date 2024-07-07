@@ -1,15 +1,33 @@
-// Initialize the map
+// Initialize the map(s)
 const map = L.map('map', {
     center: [45.519292, 11.338594],
     zoom: 8,
     maxBounds: L.latLngBounds([-90, -180], [90, 180]),
     maxBoundsViscosity: 1.0
 });
-const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const defaultMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     minZoom: 2,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+})
+var Esri_WorldTerrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
+	maxZoom: 9,
+    minZoom: 2
+});
+var CartoDB_DarkMatterNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 20,
+    minZoom: 2
+});
+defaultMap.addTo(map);
+map.removeLayer(defaultMap);
+Esri_WorldTerrain.addTo(map);
+map.removeLayer(Esri_WorldTerrain);
+CartoDB_DarkMatterNoLabels.addTo(map);
+map.removeLayer(CartoDB_DarkMatterNoLabels);
+defaultMap.addTo(map);
 
 // Initialize variables
 let circleExists = false;
@@ -20,6 +38,76 @@ let videoExists = false;
 let spotlightExists = false;
 let maskLayer;
 let spotlight;
+let captionBoolean = false;
+var currentBasemap = 'default';
+let torchOn = false;
+
+// Additional layers
+L.control.rainviewer({
+    position: 'bottomleft',
+    nextButtonText: '>',
+    playStopButtonText: 'Play/Stop',
+    prevButtonText: '<',
+    positionSliderLabelText: "Hour:",
+    opacitySliderLabelText: "Opacity:",
+    animationInterval: 500,
+    opacity: 0.7
+}).addTo(map);
+const apiKey = 'c528ed198eb83ac4758b1411dca69e44';
+const layer = 'precipitation_new';
+var precipitation = new L.tileLayer.wms(`https://tile.openweathermap.org/map/${layer}/{z}/{x}/{y}.png?appid=${apiKey}`, {
+    layers: layer,
+    format: 'image/png',
+    transparent: true,
+});
+var USAmap = new L.tileLayer.wms(`https://mesonet.agron.iastate.edu/cgi-bin/wms/us/mrms_nn.cgi?`, {
+    layers: 'mrms_p24h',
+    format: 'image/png',
+    transparent: true,
+});
+var overlayMaps = {
+    "Precipitation": precipitation,
+    "USAmap": USAmap
+};
+L.control.layers(null, overlayMaps, { position: 'bottomright' }).addTo(map);
+var toggleButton = L.control({position: 'bottomleft'});
+toggleButton.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'toggle-button');
+    div.innerHTML = '<button id="basemapToggle" class="default-button"><i class="fa fa-map"></i></button>';
+    return div;
+};
+toggleButton.addTo(map);
+
+// Basemap switching
+function mapSwitch() {
+    if (currentBasemap === 'default') {
+        map.removeLayer(defaultMap);
+        Esri_WorldTerrain.addTo(map);
+        currentBasemap = 'esri';
+        document.getElementById('basemapToggle').classList.remove('default-button');
+        document.getElementById('basemapToggle').classList.add('esri-button');
+    } else if (currentBasemap === 'esri') {
+        map.removeLayer(Esri_WorldTerrain);
+        CartoDB_DarkMatterNoLabels.addTo(map);
+        currentBasemap = 'dark';
+        document.getElementById('basemapToggle').classList.remove('esri-button');
+        document.getElementById('basemapToggle').classList.add('dark-button');
+    } else {
+        map.removeLayer(CartoDB_DarkMatterNoLabels);
+        defaultMap.addTo(map);
+        currentBasemap = 'default';
+        document.getElementById('basemapToggle').classList.remove('dark-button');
+        document.getElementById('basemapToggle').classList.add('default-button');
+    }
+}
+document.getElementById('basemapToggle').addEventListener('click', mapSwitch);
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 77) { // M key
+            mapSwitch();
+        }
+    });
+});
 
 // Function to update inner HTML content
 function updateContent(html) {
@@ -47,29 +135,38 @@ function flyToAndClear(coords, zoom) {
         map.removeLayer(spotlight);
         spotlightExists = false;
     }
+    if (captionBoolean) {
+        map.attributionControl.removeAttribution('hello');
+        captionBoolean = false;
+    }
 }
 
-// Event delegation for sub-headings
+// Event delegation for hyperlinks
 document.getElementById('text').addEventListener('click', function(event) {
-    if (event.target && event.target.id.startsWith('sub-heading')) {
-        const targetId = event.target.id;
-        if (targetId === 'sub-heading-1') {
-            flyToAndClear([45.519292, 11.338594], 6);
-        } else if (targetId === 'sub-heading-2') {
-            flyToAndClear([35.519292, 11.338594], 6);
-            if (!circleExists) {
-                circle = L.circle([35.519292, 11.338594], {
-                    color: 'red',
-                    fillColor: '#f03',
-                    fillOpacity: 0.5,
-                    radius: 50000
-                }).addTo(map);
-                circleExists = true;
-            }
+    if (event.target.id === 'link-1') {
+        flyToAndClear([45.519292, 11.338594], 6);
+    }
+    if (event.target.id === 'link-2') {
+        flyToAndClear([45.519292, 11.338594], 4);
+    }
+    if (event.target.id === 'link-3') {
+        flyToAndClear([35.519292, 11.338594], 6);
+        if (!circleExists) {
+            circle = L.circle([35.519292, 11.338594], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 50000
+            }).addTo(map);
+            circleExists = true;
         }
     }
-    if (event.target.id === 'unique') {
-        flyToAndClear([45.519292, 11.338594], 4);
+    if (event.target.id === 'link-4') {
+        if (!captionBoolean) {
+            flyToAndClear([35.519292, 11.338594], 5);
+            map.attributionControl.addAttribution('hello');
+            captionBoolean = true;
+        }
     }
 });
 
@@ -83,14 +180,14 @@ function handleButtonClick(id, coords, zoom, htmlContent) {
 }
 
 // Setup event listeners for buttons
-handleButtonClick('00', [45.519292, 11.338594], 8, '<h1 id="heading" class="montserrat-h1">Climate Mapping</h1><a href="#" id="link-1"><h2 id="sub-heading-1" class="montserrat-h2">Intro</h2></a><p class="montserrat-p" id="para-1">Lorem ipsum dolor sit amet, <a id="unique">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem. Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p><a href="#" id="link-2"><h2 id="sub-heading-2" class="montserrat-h2">Mid</h2></a><p class="montserrat-p" id="para-2">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada. Mauris pellentesque pulvinar pellentesque habitant.</p><a href="#" id="link-3"><h2 id="sub-heading-3" class="montserrat-h2">End</h2></a><p class="montserrat-p" id="para-3">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>');
+handleButtonClick('00', [45.519292, 11.338594], 8, '<h1 class="montserrat-h1 heading">Climate Mapping</h1><h2 class="montserrat-h2 sub-heading"><a class="link" id="link-1">Intro</a></h2><p class="montserrat-p paragraph">Lorem ipsum dolor sit amet, <a class="link" id="link-2">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem. Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p><h2 class="montserrat-h2 sub-heading"><a class="link" id="link-3">Mid</a></h2><p class="montserrat-p paragraph">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada. Mauris pellentesque pulvinar pellentesque habitant.</p><h2 class="montserrat-h2 sub-heading"><a class="link" id="link-4">End</a></h2><p class="montserrat-p paragraph">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>');
 handleButtonClick('01', [45.519292, 11.338594], 15, '<h1 class="montserrat-h1">01</h1><p class="montserrat-p">Aliquam sem et tortor consequat.</p>');
 handleButtonClick('02', [45.4709699, 11.6014322], 15, '<h1 class="montserrat-h1">02</h1><p class="montserrat-p">Nisi vitae suscipit tellus mauris.</p>');
 handleButtonClick('03', [45.442492, 11.584501], 15, '<h1 class="montserrat-h1">03</h1><p class="montserrat-p">Lobortis elementum nibh tellus molestie.</p>');
 handleButtonClick('04', [46, 12], 9, '<h1 class="montserrat-h1">04</h1><p class="montserrat-p">layering</p>');
 handleButtonClick('05', [41.315, -1.911], 4, '<h1 class="montserrat-h1">05</h1><p class="montserrat-p">Video overlay</p>');
-handleButtonClick('06', [41, -1], 5, '<h1 class="montserrat-h1">06</h1><a href="#" id="link-one"><h2 id="one" class="montserrat-h2">one</h2></a><a href="#" id="link-two"><h2 id="two" class="montserrat-h2">two</h2></a><a href="#" id="link-three"><h2 id="three" class="montserrat-h2">three</h2></a>');
-handleButtonClick('07', [45.519292, 11.338594], 15, '<p class="montserrat-p">end</p>')
+handleButtonClick('06', [41, -1], 5, '<h1 class="montserrat-h1">06</h1><h2 class="montserrat-h2">one</h2><h2 class="montserrat-h2">two</h2><h2 class="montserrat-h2">three</h2>');
+handleButtonClick('07', [45.519292, 11.338594], 3, '<p class="montserrat-p">end</p>')
 
 // Visualize cannons
 import { cannons } from './cannons.js';
@@ -167,4 +264,31 @@ document.getElementById('06').addEventListener('click', function() {
         spotlight.bringToFront();
         spotlightExists = true;
     }
+});
+
+// Torch feature
+function torchToggle() {
+    var torch = document.getElementById('torch');
+    if (!torchOn) {
+        torch.style.zIndex = '10000';
+        torch.style.opacity = '1';
+        torchOn = true;
+        map.on('mousemove', function(e) {
+            var point = map.latLngToContainerPoint(e.latlng);
+            torch.style.left = point.x - (torch.offsetWidth / 2) + 'px';
+            torch.style.top = point.y - (torch.offsetHeight / 2) + 'px';
+        });
+    }
+    else {
+        torch.style.zIndex = '-10000';
+        torch.style.opacity = '0';
+        torchOn = false;
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 83) {
+            torchToggle();
+        }
+    });
 });

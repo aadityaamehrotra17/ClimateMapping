@@ -48,8 +48,15 @@ a {
     color: white;
 }
 
-.text-container a:hover {
+.link {
+    background-color: rgba(218, 218, 235, 0.3);
+    border-bottom: 2px groove rgba(218, 218, 235, 0.7);
+    border-radius: 5px;
+}
+
+.link:hover {
     color: olivedrab;
+    cursor: pointer;
 }
 
 .container {
@@ -80,7 +87,7 @@ a {
 }
 
 .text-container {
-    height: calc(94% - 5px);
+    height: calc(94% - 7px);
     width: 100%;
     overflow-y: scroll;
     padding: 5vh;
@@ -94,7 +101,7 @@ a {
 
 #progress-bar {
     top: 0;
-    height: 5px;
+    height: 7px;
     background-color: #ACD793;
     width: 0%;
     max-width: 100%;
@@ -164,6 +171,51 @@ button:disabled, button:disabled:hover {
     font-style: normal;
 }
 
-#unique:hover {
+#basemapToggle {
+    border-radius: 4px;
+    background-color: white;
+    width: 33px;
+    height: 33px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: lightgray 2px groove;
+}
+
+#basemapToggle:hover {
     cursor: pointer;
+    background-color: darkgray;
+}
+
+.default-button {
+color: olivedrab;
+}
+
+.esri-button {
+    color: grey;
+}
+
+.dark-button {
+    color: black;
+}
+
+.leaflet-spotlight-container.circle {
+    border-radius: 50%;
+}
+
+.leaflet-spotlight-container {
+    z-index: -10000;
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    opacity: 0;
+    width: 200px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    -webkit-box-shadow: inset rgba(0, 0, 0, 0.25) 0px 0px 10px 10px, rgba(0, 0, 0, 0.25) 0px 0px 0px 3000px;
+    box-shadow: inset rgba(0, 0, 0, 0.25) 0px 0px 10px 10px, rgba(0, 0, 0, 0.25) 0px 0px 0px 3000px;
+    -o-transition: all 1000ms;
+    transition: all 1000ms;
+    -moz-transition: all 1000ms;
+    -webkit-transition: all 1000ms;
 }
