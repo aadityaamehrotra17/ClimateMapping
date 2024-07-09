@@ -1,7 +1,7 @@
 // Initialize the map(s)
 const map = L.map('map', {
     center: [45.519292, 11.338594],
-    zoom: 8,
+    zoom: 6,
     maxBounds: L.latLngBounds([-90, -180], [90, 180]),
     maxBoundsViscosity: 1.0
 });
@@ -29,6 +29,25 @@ CartoDB_DarkMatterNoLabels.addTo(map);
 map.removeLayer(CartoDB_DarkMatterNoLabels);
 defaultMap.addTo(map);
 
+// Add custom classes to tile layers
+defaultMap.on('load', function() {
+    document.querySelectorAll('.leaflet-tile-container').forEach(container => {
+        container.classList.add('default-map');
+    });
+});
+
+Esri_WorldTerrain.on('load', function() {
+    document.querySelectorAll('.leaflet-tile-container').forEach(container => {
+        container.classList.add('esri-map');
+    });
+});
+
+CartoDB_DarkMatterNoLabels.on('load', function() {
+    document.querySelectorAll('.leaflet-tile-container').forEach(container => {
+        container.classList.add('dark-map');
+    });
+});
+
 // Initialize variables
 let circleExists = false;
 let circle, circlee;
@@ -41,6 +60,7 @@ let spotlight;
 let captionBoolean = false;
 var currentBasemap = 'default';
 let torchOn = false;
+let modalShow = false;
 
 // Additional layers
 L.control.rainviewer({
@@ -77,6 +97,38 @@ toggleButton.onAdd = function (map) {
     return div;
 };
 toggleButton.addTo(map);
+var qButton = L.control({position: 'bottomright'});
+qButton.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'q-button');
+    div.innerHTML = '<button id="qButton"><i class="fa fa-question"></i></button>';
+    return div;
+};
+qButton.addTo(map);
+
+// Modal
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('qButton').addEventListener('click', function() {
+        if (modalShow) {
+            document.getElementById('modal').style.display = 'none';
+            modalShow = false;
+        } else {
+            document.getElementById('modal').style.display = 'block';
+            modalShow = true;
+        }
+    });
+    document.getElementById('close').addEventListener('click', function() {
+        document.getElementById('modal').style.display = 'none';
+        modalShow = false;
+    });
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 27) { // esc
+            if (modalShow) {
+                document.getElementById('modal').style.display = 'none';
+                modalShow = false;
+            }
+        }
+    });
+});
 
 // Basemap switching
 function mapSwitch() {
@@ -144,12 +196,6 @@ function flyToAndClear(coords, zoom) {
 // Event delegation for hyperlinks
 document.getElementById('text').addEventListener('click', function(event) {
     if (event.target.id === 'link-1') {
-        flyToAndClear([45.519292, 11.338594], 6);
-    }
-    if (event.target.id === 'link-2') {
-        flyToAndClear([45.519292, 11.338594], 4);
-    }
-    if (event.target.id === 'link-3') {
         flyToAndClear([35.519292, 11.338594], 6);
         if (!circleExists) {
             circle = L.circle([35.519292, 11.338594], {
@@ -160,10 +206,7 @@ document.getElementById('text').addEventListener('click', function(event) {
             }).addTo(map);
             circleExists = true;
         }
-    }
-    if (event.target.id === 'link-4') {
         if (!captionBoolean) {
-            flyToAndClear([35.519292, 11.338594], 5);
             map.attributionControl.addAttribution('hello');
             captionBoolean = true;
         }
@@ -180,7 +223,7 @@ function handleButtonClick(id, coords, zoom, htmlContent) {
 }
 
 // Setup event listeners for buttons
-handleButtonClick('00', [45.519292, 11.338594], 8, '<h1 class="montserrat-h1 heading">Climate Mapping</h1><h2 class="montserrat-h2 sub-heading"><a class="link" id="link-1">Intro</a></h2><p class="montserrat-p paragraph">Lorem ipsum dolor sit amet, <a class="link" id="link-2">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem. Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p><h2 class="montserrat-h2 sub-heading"><a class="link" id="link-3">Mid</a></h2><p class="montserrat-p paragraph">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada. Mauris pellentesque pulvinar pellentesque habitant.</p><h2 class="montserrat-h2 sub-heading"><a class="link" id="link-4">End</a></h2><p class="montserrat-p paragraph">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>');
+handleButtonClick('00', [45.519292, 11.338594], 6, '<h1 class="montserrat-h1 heading">Climate Mapping</h1><h2 class="montserrat-h2 sub-heading">Intro</h2><p id="section-1" class="montserrat-p paragraph">Lorem ipsum dolor sit amet, <a class="link" id="link-1">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem.<br><br>Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p><h2 class="montserrat-h2 sub-heading">Mid</h2><p id="section-2" class="montserrat-p paragraph">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Mauris pellentesque pulvinar pellentesque habitant.</p><h2 class="montserrat-h2 sub-heading">End</h2><p id="section-3" class="montserrat-p paragraph">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>');
 handleButtonClick('01', [45.519292, 11.338594], 15, '<h1 class="montserrat-h1">01</h1><p class="montserrat-p">Aliquam sem et tortor consequat.</p>');
 handleButtonClick('02', [45.4709699, 11.6014322], 15, '<h1 class="montserrat-h1">02</h1><p class="montserrat-p">Nisi vitae suscipit tellus mauris.</p>');
 handleButtonClick('03', [45.442492, 11.584501], 15, '<h1 class="montserrat-h1">03</h1><p class="montserrat-p">Lobortis elementum nibh tellus molestie.</p>');
@@ -292,3 +335,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Scroll updates
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('00').addEventListener('click', function() {
+        const sections = document.querySelectorAll('.text-container .paragraph');
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.9
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    updateMap(sectionId);
+                }
+            });
+        }, options);
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    });
+    if (document.getElementById('00')) {
+        document.getElementById('00').click();
+    }
+});
+function updateMap(sectionId) {
+    switch (sectionId) {
+        case 'section-1':
+            flyToAndClear([45.519292, 11.338594], 6);
+            break;
+        case 'section-2':
+            flyToAndClear([35.519292, 11.338594], 6);
+            break;
+        case 'section-3':
+            flyToAndClear([35.519292, 11.338594], 5);
+            break;
+        default:
+            break;
+    }
+}

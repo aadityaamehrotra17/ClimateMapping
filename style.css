@@ -84,6 +84,7 @@ a {
 .map-container {
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
 .text-container {
@@ -188,6 +189,52 @@ button:disabled, button:disabled:hover {
     background-color: darkgray;
 }
 
+#qButton {
+    border-radius: 50%;
+    background-color: white;
+    color: grey;
+    width: 33px;
+    height: 33px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: lightgray 2px groove;
+}
+
+#qButton:hover {
+    cursor: pointer;
+    background-color: darkgray;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    border-radius: 20px;
+    z-index: 20000;
+    left: 50%;
+    top: 50%;
+    width: 60%;
+    height: 60%;
+    overflow: auto;
+    background-color: rgb(236, 244, 236);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    padding-right: 12px;
+}
+
+.close:hover {
+    cursor: pointer;
+    color: #000;
+}
+
 .default-button {
 color: olivedrab;
 }
@@ -218,4 +265,16 @@ color: olivedrab;
     transition: all 1000ms;
     -moz-transition: all 1000ms;
     -webkit-transition: all 1000ms;
+}
+
+.default-map .leaflet-tile {
+    filter: saturate(1);
+}
+
+.esri-map .leaflet-tile {
+    filter: saturate(1);
+}
+
+.dark-map .leaflet-tile {
+    filter: saturate(1);
 }
