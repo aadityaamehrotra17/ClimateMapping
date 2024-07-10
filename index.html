@@ -17,14 +17,14 @@
 <body>
     <div class="navbar montserrat-heading">Climate Mapping</div>
     <div class="menu">
-        <a href="#" id="00" class="active"><i class="fa fa-home"></i></a>
-        <a href="#" id="01">01</a>
-        <a href="#" id="02">02</a>
-        <a href="#" id="03">03</a>
-        <a href="#" id="04">04</a>
-        <a href="#" id="05">05</a>
-        <a href="#" id="06">06</a>
-        <a href="#" id="07"><i class="fa fa-flag-checkered"></i></a>
+        <a href="#" id="00" class="menu-link active"><i class="fa fa-home"></i></a>
+        <a href="#" id="01" class="menu-link">01</a>
+        <a href="#" id="02" class="menu-link">02</a>
+        <a href="#" id="03" class="menu-link">03</a>
+        <a href="#" id="04" class="menu-link">04</a>
+        <a href="#" id="05" class="menu-link">05</a>
+        <a href="#" id="06" class="menu-link">06</a>
+        <a href="#" id="07" class="menu-link"><i class="fa fa-flag-checkered"></i></a>
     </div>
     <div class="container">
         <div class="map-column">
@@ -32,8 +32,19 @@
                 <div id="map"></div>
                 <div class="leaflet-spotlight-container circle" id="torch"></div>
                 <div class="modal" id="modal">
-                    <div class="modal-content">
+                    <div class="modal-header">
                         <span class="close" id="close">&times;</span>
+                    </div>
+                    <div class="modal-content">
+                        <h1 id="modal-header" class="montserrat-h1">Keyboard Shortcuts</h1>
+                        <h2 class="montserrat-h2">Toggle Torch</h2>
+                        <p class="montserrat-p">Press <span class="key">T</span> to activate and deactivate the torch.</p>
+                        <h2 class="montserrat-h2">Change Basemap</h2>
+                        <p class="montserrat-p">Press <span class="key">M</span> to dynamically switch between the basemaps.</p>
+                        <h2 class="montserrat-h2">Navigation</h2>
+                        <p class="montserrat-p">Use <span class="key"><i class="fa fa-arrow-left"></i></span> and <span class="key"><i class="fa fa-arrow-right"></i></span> keys to navigate between the different chapters.</p>
+                        <h2 class="montserrat-h2">Help Dialog</h2>
+                        <p class="montserrat-p">Press <span id="esc" class="key">Esc</span> to exit this dialog. To display it again, press <span class="key">H</span>.</p>
                     </div>
                 </div>
             </div>
@@ -41,13 +52,13 @@
         <div class="text-column">
             <div id="progress-bar"></div>
             <div id='text' class="text-container">
-                <h1 class="montserrat-h1 heading">Climate Mapping</h1>
-                <h2 class="montserrat-h2 sub-heading">Intro</h2>
-                <p id="section-1" class="montserrat-p paragraph">Lorem ipsum dolor sit amet, <a class="link" id="link-1">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem.<br><br>Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p>
-                <h2 class="montserrat-h2 sub-heading">Mid</h2>
-                <p id="section-2" class="montserrat-p paragraph">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Mauris pellentesque pulvinar pellentesque habitant.</p>
-                <h2 class="montserrat-h2 sub-heading">End</h2>
-                <p id="section-3" class="montserrat-p paragraph">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>
+                <h1 class="montserrat-h1">Climate Mapping</h1>
+                <h2 class="montserrat-h2">Intro</h2>
+                <p id="section-00-1" class="montserrat-p">Lorem ipsum dolor sit amet, <a class="link" id="link-00-1">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem.<br><br>Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p>
+                <h2 class="montserrat-h2">Mid</h2>
+                <p id="section-00-2" class="montserrat-p">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Mauris pellentesque pulvinar pellentesque habitant.</p>
+                <h2 class="montserrat-h2">End</h2>
+                <p id="section-00-3" class="montserrat-p">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>
             </div>
             <div class="navigation-buttons">
                 <button id="prev"><i class="fa fa-arrow-left"></i></button>

@@ -121,10 +121,18 @@ document.addEventListener('DOMContentLoaded', function() {
         modalShow = false;
     });
     document.addEventListener('keydown', function(event) {
-        if (event.keyCode === 27) { // esc
+        if (event.keyCode === 27) {
             if (modalShow) {
                 document.getElementById('modal').style.display = 'none';
                 modalShow = false;
+            }
+        }
+    });
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 72) {
+            if (!modalShow) {
+                document.getElementById('modal').style.display = 'block';
+                modalShow = true;
             }
         }
     });
@@ -195,7 +203,7 @@ function flyToAndClear(coords, zoom) {
 
 // Event delegation for hyperlinks
 document.getElementById('text').addEventListener('click', function(event) {
-    if (event.target.id === 'link-1') {
+    if (event.target.id === 'link-00-1') {
         flyToAndClear([35.519292, 11.338594], 6);
         if (!circleExists) {
             circle = L.circle([35.519292, 11.338594], {
@@ -223,8 +231,8 @@ function handleButtonClick(id, coords, zoom, htmlContent) {
 }
 
 // Setup event listeners for buttons
-handleButtonClick('00', [45.519292, 11.338594], 6, '<h1 class="montserrat-h1 heading">Climate Mapping</h1><h2 class="montserrat-h2 sub-heading">Intro</h2><p id="section-1" class="montserrat-p paragraph">Lorem ipsum dolor sit amet, <a class="link" id="link-1">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem.<br><br>Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p><h2 class="montserrat-h2 sub-heading">Mid</h2><p id="section-2" class="montserrat-p paragraph">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Mauris pellentesque pulvinar pellentesque habitant.</p><h2 class="montserrat-h2 sub-heading">End</h2><p id="section-3" class="montserrat-p paragraph">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>');
-handleButtonClick('01', [45.519292, 11.338594], 15, '<h1 class="montserrat-h1">01</h1><p class="montserrat-p">Aliquam sem et tortor consequat.</p>');
+handleButtonClick('00', [45.519292, 11.338594], 6, '<h1 class="montserrat-h1">Climate Mapping</h1><h2 class="montserrat-h2">Intro</h2><p id="section-00-1" class="montserrat-p">Lorem ipsum dolor sit amet, <a class="link" id="link-00-1">consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero enim sed faucibus turpis in eu mi. Neque laoreet suspendisse interdum consectetur libero id. Mattis molestie a iaculis at erat pellentesque adipiscing. Diam maecenas sed enim ut sem.<br><br>Commodo odio aenean sed adipiscing diam donec adipiscing. Amet tellus cras adipiscing enim eu turpis egestas. Nec dui nunc mattis enim ut tellus. Magna fermentum iaculis eu non diam phasellus vestibulum. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Enim nunc faucibus a pellentesque sit amet.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.</p><h2 class="montserrat-h2">Mid</h2><p id="section-00-2" class="montserrat-p">Aliquam sem et tortor consequat id porta nibh venenatis. Mauris cursus mattis molestie a iaculis at erat pellentesque. Non enim praesent elementum facilisis leo. Leo vel orci porta non pulvinar neque. Netus et malesuada fames ac turpis egestas integer eget. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Vulputate dignissim suspendisse in est. Nec ullamcorper sit amet risus. Condimentum id venenatis a condimentum vitae sapien. Neque aliquam vestibulum morbi blandit cursus. Ut tellus elementum sagittis vitae et leo. Pulvinar sapien et ligula ullamcorper malesuada.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo.<br><br>Faucibus in ornare quam viverra orci sagittis eu. Aliquet risus feugiat in ante metus dictum at tempor commodo. Mauris pellentesque pulvinar pellentesque habitant.</p><h2 class="montserrat-h2">End</h2><p id="section-00-3" class="montserrat-p">Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.<br><br>Lobortis elementum nibh tellus molestie nunc non blandit. Arcu dui vivamus arcu felis. A diam sollicitudin tempor id. Dignissim suspendisse in est ante in. Eu tincidunt tortor aliquam nulla facilisi cras. Elementum nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Consequat ac felis donec et odio. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.</p>');
+handleButtonClick('01', [45.519292, 11.338594], 15, '<h1 class="montserrat-h1">01</h1><h2 class="montserrat-h2">A</h2><p id="section-01-1" class="montserrat-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac tincidunt vitae semper quis lectus. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Lorem ipsum dolor sit amet. Magnis dis parturient montes nascetur ridiculus mus mauris. Id velit ut tortor pretium. Rutrum quisque non tellus orci ac auctor augue mauris augue. Enim sit amet venenatis urna cursus eget nunc scelerisque. Ultricies mi quis hendrerit dolor magna eget est lorem. Tincidunt lobortis feugiat vivamus at augue eget arcu dictum varius. Neque gravida in fermentum et sollicitudin. Curabitur gravida arcu ac tortor dignissim convallis aenean et tortor. Nulla facilisi nullam vehicula ipsum. Tellus id interdum velit laoreet id donec. Ut aliquam purus sit amet luctus venenatis lectus magna. Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et. Leo vel fringilla est ullamcorper eget. At lectus urna duis convallis convallis. Facilisi etiam dignissim diam quis enim. Lacus suspendisse faucibus interdum posuere. Sit amet cursus sit amet dictum sit amet justo. Aliquam etiam erat velit scelerisque in dictum non. Ac felis donec et odio pellentesque diam. Nisl purus in mollis nunc sed id semper risus. Sapien faucibus et molestie ac feugiat sed lectus. Blandit massa enim nec dui nunc. Eu ultrices vitae auctor eu augue ut lectus arcu. Aliquet nibh praesent tristique magna sit. Aenean vel elit scelerisque mauris pellentesque pulvinar. Vel facilisis volutpat est velit egestas dui. Facilisis sed odio morbi quis commodo odio. Tortor at auctor urna nunc id cursus metus. Massa tincidunt nunc pulvinar sapien. Elementum facilisis leo vel fringilla est ullamcorper. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. Consectetur adipiscing elit duis tristique sollicitudin. Tellus pellentesque eu tincidunt tortor. Arcu dui vivamus arcu felis bibendum ut. Netus et malesuada fames ac turpis. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae. Aliquet nibh praesent tristique magna sit amet purus. Neque aliquam vestibulum morbi blandit cursus risus at ultrices mi. Pharetra magna ac placerat vestibulum lectus mauris ultrices eros in. Scelerisque in dictum non consectetur a erat nam. Arcu dui vivamus arcu felis. Arcu dictum varius duis at. Id ornare arcu odio ut sem. Semper eget duis at tellus at urna condimentum mattis pellentesque. Nisi scelerisque eu ultrices vitae. Faucibus in ornare quam viverra orci. Eget mauris pharetra et ultrices neque ornare aenean. Turpis massa sed elementum tempus egestas sed sed risus pretium. Eu volutpat odio facilisis mauris sit amet. Quisque egestas diam in arcu cursus. Vitae aliquet nec ullamcorper sit amet risus nullam eget. Mattis pellentesque id nibh tortor id aliquet lectus proin nibh. Aenean et tortor at risus viverra adipiscing. Et magnis dis parturient montes nascetur ridiculus mus mauris. Congue eu consequat ac felis donec. Ut lectus arcu bibendum at varius vel pharetra. Et leo duis ut diam. Nec nam aliquam sem et tortor consequat. Morbi tempus iaculis urna id volutpat lacus laoreet. Lacus laoreet non curabitur gravida arcu ac tortor dignissim. Lectus proin nibh nisl condimentum id venenatis a condimentum vitae. Lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Faucibus turpis in eu mi bibendum. Purus in mollis nunc sed id. Consectetur a erat nam at lectus urna duis convallis convallis. Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Ante in nibh mauris cursus. Eget dolor morbi non arcu. Risus in hendrerit gravida rutrum. Pellentesque dignissim enim sit amet. Ac auctor augue mauris augue neque gravida. Consectetur purus ut faucibus pulvinar elementum integer enim. Fermentum iaculis eu non diam phasellus vestibulum lorem. Varius duis at consectetur lorem donec massa sapien faucibus. Nec dui nunc mattis enim. Sodales neque sodales ut etiam sit amet. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi. Velit laoreet id donec ultrices tincidunt. Aliquam id diam maecenas ultricies mi eget mauris. Risus viverra adipiscing at in. Turpis tincidunt id aliquet risus feugiat in ante metus. Blandit turpis cursus in hac habitasse. Egestas congue quisque egestas diam in arcu. Tristique senectus et netus et malesuada fames ac turpis. Sodales ut eu sem integer vitae justo. Fermentum leo vel orci porta non pulvinar neque laoreet. Sed odio morbi quis commodo odio. Massa tempor nec feugiat nisl pretium fusce. Libero nunc consequat interdum varius sit amet mattis vulputate enim. Nisi scelerisque eu ultrices vitae auctor eu augue ut.</p><h2 class="montserrat-h2">B</h2><p id="section-01-2" class="montserrat-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac tincidunt vitae semper quis lectus. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Lorem ipsum dolor sit amet. Magnis dis parturient montes nascetur ridiculus mus mauris. Id velit ut tortor pretium. Rutrum quisque non tellus orci ac auctor augue mauris augue. Enim sit amet venenatis urna cursus eget nunc scelerisque. Ultricies mi quis hendrerit dolor magna eget est lorem. Tincidunt lobortis feugiat vivamus at augue eget arcu dictum varius. Neque gravida in fermentum et sollicitudin. Curabitur gravida arcu ac tortor dignissim convallis aenean et tortor. Nulla facilisi nullam vehicula ipsum. Tellus id interdum velit laoreet id donec. Ut aliquam purus sit amet luctus venenatis lectus magna. Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et. Leo vel fringilla est ullamcorper eget. At lectus urna duis convallis convallis. Facilisi etiam dignissim diam quis enim. Lacus suspendisse faucibus interdum posuere. Sit amet cursus sit amet dictum sit amet justo. Aliquam etiam erat velit scelerisque in dictum non. Ac felis donec et odio pellentesque diam. Nisl purus in mollis nunc sed id semper risus. Sapien faucibus et molestie ac feugiat sed lectus. Blandit massa enim nec dui nunc. Eu ultrices vitae auctor eu augue ut lectus arcu. Aliquet nibh praesent tristique magna sit. Aenean vel elit scelerisque mauris pellentesque pulvinar. Vel facilisis volutpat est velit egestas dui. Facilisis sed odio morbi quis commodo odio. Tortor at auctor urna nunc id cursus metus. Massa tincidunt nunc pulvinar sapien. Elementum facilisis leo vel fringilla est ullamcorper. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. Consectetur adipiscing elit duis tristique sollicitudin. Tellus pellentesque eu tincidunt tortor. Arcu dui vivamus arcu felis bibendum ut. Netus et malesuada fames ac turpis. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae. Aliquet nibh praesent tristique magna sit amet purus. Neque aliquam vestibulum morbi blandit cursus risus at ultrices mi. Pharetra magna ac placerat vestibulum lectus mauris ultrices eros in. Scelerisque in dictum non consectetur a erat nam. Arcu dui vivamus arcu felis. Arcu dictum varius duis at. Id ornare arcu odio ut sem. Semper eget duis at tellus at urna condimentum mattis pellentesque. Nisi scelerisque eu ultrices vitae. Faucibus in ornare quam viverra orci. Eget mauris pharetra et ultrices neque ornare aenean. Turpis massa sed elementum tempus egestas sed sed risus pretium. Eu volutpat odio facilisis mauris sit amet. Quisque egestas diam in arcu cursus. Vitae aliquet nec ullamcorper sit amet risus nullam eget. Mattis pellentesque id nibh tortor id aliquet lectus proin nibh. Aenean et tortor at risus viverra adipiscing. Et magnis dis parturient montes nascetur ridiculus mus mauris. Congue eu consequat ac felis donec. Ut lectus arcu bibendum at varius vel pharetra. Et leo duis ut diam. Nec nam aliquam sem et tortor consequat. Morbi tempus iaculis urna id volutpat lacus laoreet. Lacus laoreet non curabitur gravida arcu ac tortor dignissim. Lectus proin nibh nisl condimentum id venenatis a condimentum vitae. Lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Faucibus turpis in eu mi bibendum. Purus in mollis nunc sed id. Consectetur a erat nam at lectus urna duis convallis convallis. Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Ante in nibh mauris cursus. Eget dolor morbi non arcu. Risus in hendrerit gravida rutrum. Pellentesque dignissim enim sit amet. Ac auctor augue mauris augue neque gravida. Consectetur purus ut faucibus pulvinar elementum integer enim. Fermentum iaculis eu non diam phasellus vestibulum lorem. Varius duis at consectetur lorem donec massa sapien faucibus. Nec dui nunc mattis enim. Sodales neque sodales ut etiam sit amet. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi. Velit laoreet id donec ultrices tincidunt. Aliquam id diam maecenas ultricies mi eget mauris. Risus viverra adipiscing at in. Turpis tincidunt id aliquet risus feugiat in ante metus. Blandit turpis cursus in hac habitasse. Egestas congue quisque egestas diam in arcu. Tristique senectus et netus et malesuada fames ac turpis. Sodales ut eu sem integer vitae justo. Fermentum leo vel orci porta non pulvinar neque laoreet. Sed odio morbi quis commodo odio. Massa tempor nec feugiat nisl pretium fusce. Libero nunc consequat interdum varius sit amet mattis vulputate enim. Nisi scelerisque eu ultrices vitae auctor eu augue ut.</p>');
 handleButtonClick('02', [45.4709699, 11.6014322], 15, '<h1 class="montserrat-h1">02</h1><p class="montserrat-p">Nisi vitae suscipit tellus mauris.</p>');
 handleButtonClick('03', [45.442492, 11.584501], 15, '<h1 class="montserrat-h1">03</h1><p class="montserrat-p">Lobortis elementum nibh tellus molestie.</p>');
 handleButtonClick('04', [46, 12], 9, '<h1 class="montserrat-h1">04</h1><p class="montserrat-p">layering</p>');
@@ -330,7 +338,7 @@ function torchToggle() {
 }
 document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(event) {
-        if (event.keyCode === 83) {
+        if (event.keyCode === 84) {
             torchToggle();
         }
     });
@@ -338,41 +346,67 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Scroll updates
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('00').addEventListener('click', function() {
-        const sections = document.querySelectorAll('.text-container .paragraph');
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.9
-        };
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sectionId = entry.target.id;
-                    updateMap(sectionId);
-                }
-            });
-        }, options);
-        sections.forEach(section => {
-            observer.observe(section);
-        });
+    const menuOptions = ['00', '01', '02', '03', '04', '05', '06', '07'];
+    menuOptions.forEach(optionId => {
+        setupMenuOption(optionId);
     });
-    if (document.getElementById('00')) {
-        document.getElementById('00').click();
+    if (document.getElementById(menuOptions[0])) {
+        document.getElementById(menuOptions[0]).click();
     }
 });
+function setupMenuOption(optionId) {
+    const menuOption = document.getElementById(optionId);
+    if (menuOption) {
+        menuOption.addEventListener('click', function() {
+            const sections = document.querySelectorAll('.text-container .montserrat-p');
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.id;
+                        updateMap(sectionId);
+                    }
+                });
+            }, options);
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    }
+}
 function updateMap(sectionId) {
     switch (sectionId) {
-        case 'section-1':
+        case 'section-00-1':
             flyToAndClear([45.519292, 11.338594], 6);
             break;
-        case 'section-2':
+        case 'section-00-2':
             flyToAndClear([35.519292, 11.338594], 6);
             break;
-        case 'section-3':
+        case 'section-00-3':
             flyToAndClear([35.519292, 11.338594], 5);
+            break;
+        case 'section-01-1':
+            flyToAndClear([45.519292, 11.338594], 15);
+            break;
+        case 'section-01-2':
+            flyToAndClear([45.519292, 11.338594], 18);
             break;
         default:
             break;
     }
 }
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const menuLinks = document.querySelectorAll('.menu-link');
+    const textContainer = document.querySelector('.text-container');
+
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            textContainer.scrollTop = 0;
+        });
+    });
+});

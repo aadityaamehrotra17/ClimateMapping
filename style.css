@@ -222,6 +222,10 @@ button:disabled, button:disabled:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.modal-content {
+    margin: 30px 20px;
+}
+
 .close {
     color: #aaaaaa;
     float: right;
@@ -277,4 +281,27 @@ color: olivedrab;
 
 .dark-map .leaflet-tile {
     filter: saturate(1);
+}
+
+.key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    background-color: #eee;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+}
+
+#esc {
+    font-size: 11px;
+}
+
+#modal-header {
+    text-align: center;
 }
