@@ -1,32 +1,31 @@
 // Initialize the map(s)
-const map = L.map('map', {
+var map = L.map('map', {
     center: [45.519292, 11.338594],
     zoom: 6,
     maxBounds: L.latLngBounds([-90, -180], [90, 180]),
     maxBoundsViscosity: 1.0
 });
-const defaultMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var defaultMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     minZoom: 2,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 })
-var Esri_WorldTerrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}', {
+var stadiaMap = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain_background/{z}/{x}/{y}@2x.png', {
+    maxZoom: 18,
+    minZoom: 2,
+    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> contributors'
+}).addTo(map);
+var esriMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
 	maxZoom: 9,
     minZoom: 2
 });
-var CartoDB_DarkMatterNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-	subdomains: 'abcd',
-	maxZoom: 20,
-    minZoom: 2
-});
 defaultMap.addTo(map);
 map.removeLayer(defaultMap);
-Esri_WorldTerrain.addTo(map);
-map.removeLayer(Esri_WorldTerrain);
-CartoDB_DarkMatterNoLabels.addTo(map);
-map.removeLayer(CartoDB_DarkMatterNoLabels);
+stadiaMap.addTo(map);
+map.removeLayer(stadiaMap);
+esriMap.addTo(map);
+map.removeLayer(esriMap);
 defaultMap.addTo(map);
 
 // Add custom classes to tile layers
@@ -36,15 +35,15 @@ defaultMap.on('load', function() {
     });
 });
 
-Esri_WorldTerrain.on('load', function() {
+stadiaMap.on('load', function() {
     document.querySelectorAll('.leaflet-tile-container').forEach(container => {
-        container.classList.add('esri-map');
+        container.classList.add('stadia-map');
     });
 });
 
-CartoDB_DarkMatterNoLabels.on('load', function() {
+esriMap.on('load', function() {
     document.querySelectorAll('.leaflet-tile-container').forEach(container => {
-        container.classList.add('dark-map');
+        container.classList.add('esri-map');
     });
 });
 
@@ -58,7 +57,7 @@ let spotlightExists = false;
 let maskLayer;
 let spotlight;
 let captionBoolean = false;
-var currentBasemap = 'default';
+let currentBasemap = 'default';
 let torchOn = false;
 let modalShow = false;
 
@@ -142,21 +141,21 @@ document.addEventListener('DOMContentLoaded', function() {
 function mapSwitch() {
     if (currentBasemap === 'default') {
         map.removeLayer(defaultMap);
-        Esri_WorldTerrain.addTo(map);
+        stadiaMap.addTo(map);
         currentBasemap = 'esri';
         document.getElementById('basemapToggle').classList.remove('default-button');
-        document.getElementById('basemapToggle').classList.add('esri-button');
+        document.getElementById('basemapToggle').classList.add('stadia-button');
     } else if (currentBasemap === 'esri') {
-        map.removeLayer(Esri_WorldTerrain);
-        CartoDB_DarkMatterNoLabels.addTo(map);
+        map.removeLayer(stadiaMap);
+        esriMap.addTo(map);
         currentBasemap = 'dark';
-        document.getElementById('basemapToggle').classList.remove('esri-button');
-        document.getElementById('basemapToggle').classList.add('dark-button');
+        document.getElementById('basemapToggle').classList.remove('stadia-button');
+        document.getElementById('basemapToggle').classList.add('esri-button');
     } else {
-        map.removeLayer(CartoDB_DarkMatterNoLabels);
+        map.removeLayer(esriMap);
         defaultMap.addTo(map);
         currentBasemap = 'default';
-        document.getElementById('basemapToggle').classList.remove('dark-button');
+        document.getElementById('basemapToggle').classList.remove('esri-button');
         document.getElementById('basemapToggle').classList.add('default-button');
     }
 }
@@ -294,7 +293,7 @@ document.getElementById('06').addEventListener('click', function() {
     if (!spotlightExists) {
         map.createPane('maskPane');
         map.getPane('maskPane').style.zIndex = 450;
-        maskLayer = L.rectangle([[-90, -180], [90, 180]], {
+        maskLayer = L.rectangle([[-120, -240], [120, 240]], {
             color: "transparent",
             weight: 1,
             fillColor: "#000",
@@ -362,7 +361,7 @@ function setupMenuOption(optionId) {
             const options = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.5
+                threshold: 0.5 // parameter value
             };
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -403,7 +402,6 @@ function updateMap(sectionId) {
 document.addEventListener('DOMContentLoaded', (event) => {
     const menuLinks = document.querySelectorAll('.menu-link');
     const textContainer = document.querySelector('.text-container');
-
     menuLinks.forEach(link => {
         link.addEventListener('click', () => {
             textContainer.scrollTop = 0;
