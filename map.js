@@ -60,6 +60,7 @@ let captionBoolean = false;
 let currentBasemap = 'default';
 let torchOn = false;
 let modalShow = false;
+let homeModalShow = false;
 
 // Additional layers
 L.control.rainviewer({
@@ -72,23 +73,6 @@ L.control.rainviewer({
     animationInterval: 500,
     opacity: 0.7
 }).addTo(map);
-const apiKey = 'c528ed198eb83ac4758b1411dca69e44';
-const layer = 'precipitation_new';
-var precipitation = new L.tileLayer.wms(`https://tile.openweathermap.org/map/${layer}/{z}/{x}/{y}.png?appid=${apiKey}`, {
-    layers: layer,
-    format: 'image/png',
-    transparent: true,
-});
-var USAmap = new L.tileLayer.wms(`https://mesonet.agron.iastate.edu/cgi-bin/wms/us/mrms_nn.cgi?`, {
-    layers: 'mrms_p24h',
-    format: 'image/png',
-    transparent: true,
-});
-var overlayMaps = {
-    "Precipitation": precipitation,
-    "USAmap": USAmap
-};
-L.control.layers(null, overlayMaps, { position: 'bottomright' }).addTo(map);
 var toggleButton = L.control({position: 'bottomleft'});
 toggleButton.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'toggle-button');
@@ -104,25 +88,185 @@ qButton.onAdd = function (map) {
 };
 qButton.addTo(map);
 
+// james code
+var mostRecentTime;
+// finds the most recent time from the WMS eumetsat h60b satalite
+function updateLayerWithMostRecentTime() {
+    var capabilitiesUrl = `https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetCapabilities`;
+
+    fetch(capabilitiesUrl)
+        .then(response => response.text())
+        .then(text => {
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(text, "text/xml");
+
+            var targetLayer = Array.from(xmlDoc.querySelectorAll('Layer')).find(layer =>
+                layer.querySelector('Name')?.textContent === "msg_fes:h60b"
+            );
+
+            var dimension = targetLayer?.querySelector('Dimension[name="time"]');
+            var layerTimes = dimension?.textContent;
+            if (layerTimes) {
+                var times = layerTimes.split('/');
+                mostRecentTime = times[times.length - 2].slice(0,16);
+                console.log("Most recent time:", mostRecentTime);
+                eumetsatRGBNaturalColour.setParams({ time: mostRecentTime + ':00.000Z' });
+            }
+        })
+        .catch(() => {});
+}
+
+updateLayerWithMostRecentTime();
+
+mostRecentTime = new Date(new Date().getTime() - 3600000).toISOString().slice(0, 16);
+console.log("Most recent time:", mostRecentTime);
+// for some reason the above function above that is meant to find 'mostRecentTime' is not working so I have to manually input the value, Aadi plz fix this if you can
+// It does fetch the correct time, I have checked this on the console, but it does not update the global variable
+// for now, just manually update it here and it will work.
+
+var lasttime = '2022-12-09T00:45';
+
+// The time control part of the Eumestat widget
+var TimeControl = L.Control.extend({
+    onAdd: function(map) {
+        var input = L.DomUtil.create('input');
+        input.type = 'datetime-local';
+        input.style = 'width: 250px;';
+        input.max = mostRecentTime; 
+        input.min = lasttime;
+        input.value = mostRecentTime;
+        input.onchange = function(e) {
+            var newTime = e.target.value + ':00.000Z';
+            mostRecentTime = e.target.value; // Update the global variable
+            eumetsatRGBNaturalColour.setParams({time: newTime}, false);
+            thunder.setParams({time: newTime}, false);
+        };
+        return input;
+    }
+});
+
+// add satalites to the map here
+var eumetsatRGBNaturalColour = new L.tileLayer.wms(`https://view.eumetsat.int/geoserver/wms`, {
+    layers: 'msg_fes:h60b',
+    format: 'image/png',
+    transparent: true,
+    time: TimeControl.value + ':00.000Z'
+});
+
+var thunder = new L.tileLayer.wms(`https://view.eumetsat.int/geoserver/wms`, {
+    layers: 'msg_fes:rdt',
+    format: 'image/png',
+    transparent: true,
+    time: TimeControl.value + ':00.000Z'
+});
+
+var overlayMaps = {
+    "Precipitation - Eumetsat": eumetsatRGBNaturalColour,
+    "Rapidly Developing Thunderstorms - Eumetsat": thunder
+};
+
+
+// CustomControl for the Eumetsat layers
+var CustomControl = L.Control.extend({
+    onAdd: function(map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar');
+        L.DomEvent.disableClickPropagation(container);
+
+        // Toggle Button
+        var toggleBtn = L.DomUtil.create('a', 'leaflet-bar', container);
+        toggleBtn.href = '#';
+        toggleBtn.innerHTML = '☰';
+        L.DomEvent.on(toggleBtn, 'click', L.DomEvent.stop).on(toggleBtn, 'click', function() {
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Control Panel
+        var panel = L.DomUtil.create('div', 'control-panel', container);
+        panel.style.display = 'none'; // Ensure it starts hidden
+
+        // Panel Title
+        var panelTitle = L.DomUtil.create('div', 'panel-title', panel);
+        panelTitle.innerHTML = 'Eumetsat Satellite Layers';
+        
+        // Close Button
+        var closeButton = L.DomUtil.create('a', 'close-button', panel);
+        closeButton.innerHTML = '&times';
+        closeButton.href = '#';
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '10px'; // Adjusted for better vertical alignment
+        closeButton.style.right = '10px'; // Adjusted for better horizontal alignment
+        closeButton.style.fontSize = '16px'; // Smaller font size for a more subtle button
+        closeButton.style.lineHeight = '16px'; // Adjust line height to match font size for better alignment
+        closeButton.style.width = '16px'; // Define a specific width
+        closeButton.style.height = '16px'; // Define a specific height
+        closeButton.style.textAlign = 'center'; // Ensure the '×' is centered
+        closeButton.style.padding = '0'; // Remove padding to prevent increasing the widget size
+        closeButton.style.margin = '0'; // Ensure no additional space is added around the button
+        closeButton.style.border = '#fff';
+        L.DomEvent.on(closeButton, 'click', L.DomEvent.stop).on(closeButton, 'click', function() {
+            panel.style.display = 'none';
+        });
+
+        // Date-Time Picker - Now using TimeControl with the global mostRecentTime
+        var timeControl = new TimeControl();
+        panel.appendChild(timeControl.onAdd(map));
+
+        // Overlay Layer Selection - Changed to Dropdown
+        var overlaySelect = L.DomUtil.create('select', 'overlay-map-select', panel);
+        overlaySelect.style.width = '250px'; // Set consistent width
+        var defaultOption = L.DomUtil.create('option', '', overlaySelect);
+        defaultOption.innerHTML = "Select a layer";
+        defaultOption.selected = true;
+        
+        Object.keys(overlayMaps).forEach(function(key) {
+            var option = L.DomUtil.create('option', '', overlaySelect);
+            option.value = key;
+            option.innerHTML = key;
+        });
+        overlaySelect.onchange = this._onOverlayChange.bind(this, map);
+        return container;
+    },
+    _onOverlayChange: function(map, e) {
+        var selectedOverlays = Array.from(e.target.options).filter(option => option.selected).map(option => option.value);
+        Object.keys(overlayMaps).forEach(function(key) {
+            if (selectedOverlays.includes(key)) {
+                map.addLayer(overlayMaps[key]);
+                overlayMaps[key].bringToFront();
+            } else {
+                map.removeLayer(overlayMaps[key]);
+            }
+        });
+    }
+});
+map.addControl(new CustomControl({position: 'bottomleft'}));
+
 // Modal
 document.addEventListener('DOMContentLoaded', function() {
+    if (!homeModalShow) {
+        document.getElementById('home-modal').classList.add('modal-show');
+        homeModalShow = true;
+    }
     document.getElementById('qButton').addEventListener('click', function() {
         if (modalShow) {
-            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal').classList.remove('modal-show');
             modalShow = false;
         } else {
-            document.getElementById('modal').style.display = 'block';
+            document.getElementById('modal').classList.add('modal-show');
             modalShow = true;
         }
     });
     document.getElementById('close').addEventListener('click', function() {
-        document.getElementById('modal').style.display = 'none';
+        document.getElementById('modal').classList.remove('modal-show');
+        modalShow = false;
+    });
+    document.getElementById('home-close').addEventListener('click', function() {
+        document.getElementById('home-modal').classList.remove('modal-show');
         modalShow = false;
     });
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 27) {
             if (modalShow) {
-                document.getElementById('modal').style.display = 'none';
+                document.getElementById('modal').classList.remove('modal-show');
                 modalShow = false;
             }
         }
@@ -130,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 72) {
             if (!modalShow) {
-                document.getElementById('modal').style.display = 'block';
+                document.getElementById('modal').classList.add('modal-show');
                 modalShow = true;
             }
         }
@@ -237,7 +381,7 @@ handleButtonClick('03', [45.442492, 11.584501], 15, '<h1 class="montserrat-h1">0
 handleButtonClick('04', [46, 12], 9, '<h1 class="montserrat-h1">04</h1><p class="montserrat-p">layering</p>');
 handleButtonClick('05', [41.315, -1.911], 4, '<h1 class="montserrat-h1">05</h1><p class="montserrat-p">Video overlay</p>');
 handleButtonClick('06', [41, -1], 5, '<h1 class="montserrat-h1">06</h1><h2 class="montserrat-h2">one</h2><h2 class="montserrat-h2">two</h2><h2 class="montserrat-h2">three</h2>');
-handleButtonClick('07', [45.519292, 11.338594], 3, '<p class="montserrat-p">end</p>')
+handleButtonClick('07', [45.519292, 11.338594], 2, "<h1 class='montserrat-h1'>Conclusion</h1><h2 class='montserrat-h2'>About</h2><p class='montserrat-p'>This is a companion website to Cameron Blevins, Paper Trails: The US Post and the Making of the American West (Oxford University Press, 2021). Yan Wu built and designed the visualization, Cameron Blevins wrote the content, and Steven Braun provided consultation on its layout. It was completed over 2018-2019 with support from the NULab for Texts, Maps and Networks, Northeastern University's Digital Scholarship Group, and the Northeastern University History Department. Many thanks to Benjamin Hoy and Alessandra Link for providing feedback on earlier drafts.<br><br>We relied on several sources of data. The main dataset is US Post Offices, a dataset made by Cameron Blevins and based on historical research by Richard W. Helbock. Historical boundaries of US states and territories came from the Newberry Library's Atlas of Historical County Boundaries. Claudio Saunt generously provided spatial data for unceded Native land and government reservations, from the Invasion of America. Other sources of data are documented in the references for that section.</p><h2 class='montserrat-h2'>Credits</h2><div class='image-container'><div class='image-column'><img src='https://images.ctfassets.net/1wryd5vd9xez/4DxzhQY7WFsbtTkoYntq23/a4a04701649e92a929010a6a860b66bf/https___cdn-images-1.medium.com_max_2000_1_Y6l_FDhxOI1AhjL56dHh8g.jpeg' alt='image' class='image'></div><div class='description-column'><p class='montserrat-p'>Lorem ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum.</p></div></div><br><div class='image-container'><div class='image-column'><img src='https://images.ctfassets.net/1wryd5vd9xez/4DxzhQY7WFsbtTkoYntq23/a4a04701649e92a929010a6a860b66bf/https___cdn-images-1.medium.com_max_2000_1_Y6l_FDhxOI1AhjL56dHh8g.jpeg' alt='image' class='image'></div><div class='description-column'><p class='montserrat-p'>Lorem ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum.</p></div></div><br><div class='image-container'><div class='image-column'><img src='https://images.ctfassets.net/1wryd5vd9xez/4DxzhQY7WFsbtTkoYntq23/a4a04701649e92a929010a6a860b66bf/https___cdn-images-1.medium.com_max_2000_1_Y6l_FDhxOI1AhjL56dHh8g.jpeg' alt='image' class='image'></div><div class='description-column'><p class='montserrat-p'>Lorem ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum.</p></div></div>")
 
 // Visualize cannons
 import { cannons } from './cannons.js';

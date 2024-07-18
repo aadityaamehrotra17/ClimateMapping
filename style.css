@@ -211,22 +211,35 @@ button:disabled, button:disabled:hover {
 }
 
 .modal {
-    display: none;
+    display: block;
+    visibility: hidden;
     position: absolute;
     border-radius: 20px;
     z-index: 20000;
     left: 50%;
     top: 50%;
     width: 60%;
-    height: 60%;
+    height: 50%;
     overflow: auto;
     background-color: rgb(236, 244, 236);
     transform: translate(-50%, -50%);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.modal-show {
+    visibility: visible;
+    opacity: 1;
+    height: 60%;
 }
 
 .modal-content {
     margin: 30px 20px;
+}
+
+.modal-heading {
+    text-align: center;
 }
 
 .close {
@@ -306,8 +319,29 @@ color: olivedrab;
     font-size: 11px;
 }
 
-#modal-header {
-    text-align: center;
+.image-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.image-column {
+    flex: 0 0 auto;
+    margin-right: 20px;
+}
+
+.image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.description-column {
+    flex: 1;
+    text-align: left;
 }
 
 @media (max-width: 1050px) {
@@ -344,3 +378,78 @@ color: olivedrab;
         height: 80%;
     }
 }
+
+.custom-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E7F0DC;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.control-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    margin-right: 5px;
+}
+
+.control-tooltip {
+    background-color: #B6C7AA;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    position: absolute;
+    z-index: 10;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.control-panel {
+    display: none; /* Keep initially hidden */
+    position: absolute; /* Position relative to its nearest positioned ancestor */
+    bottom: 0px; /* Adjust based on the toggle button's size and desired offset */
+    left: 0; /* Align to the right edge of its container */
+    width: 300px; /* Adjust width as needed */
+    background-color: #E7F0DC;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    z-index: 1000; /* Ensure it's above other map elements */
+}
+
+.custom-control .control-panel {
+    display: none; /* Initially hide the control panel */
+}
+
+.panel-title {
+    text-align: center; /* Keep center alignment */
+    font-size: 16px; /* Adjust font size to be slightly smaller, more in line with control panel text */
+    font-weight: bold; /* Keep the font bold */
+    padding: 10px 20px; /* Adjust padding to match the control panel's padding, considering the title's context */
+    background-color: #fff; /* Change background color to match the control panel */
+    color: #333; /* Change text color to a darker shade for contrast against the lighter background */
+    font-family: Arial, sans-serif; /* Keep the font family consistent */
+    border-radius: 5px 5px 0 0; /* Apply border-radius to the top corners to align with the control panel's rounded corners */
+    box-shadow: none; /* Remove the box shadow to match the control panel's appearance */
+    border: 1px solid #666; /* Apply a border to match the control panel's border */
+    width: 250px;
+}
+
+/* .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    line-height: 16px;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    border: #fff;
+} */
