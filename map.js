@@ -88,41 +88,10 @@ qButton.onAdd = function (map) {
 };
 qButton.addTo(map);
 
-// james code
+
 var mostRecentTime;
-// finds the most recent time from the WMS eumetsat h60b satalite
-function updateLayerWithMostRecentTime() {
-    var capabilitiesUrl = `https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetCapabilities`;
-
-    fetch(capabilitiesUrl)
-        .then(response => response.text())
-        .then(text => {
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(text, "text/xml");
-
-            var targetLayer = Array.from(xmlDoc.querySelectorAll('Layer')).find(layer =>
-                layer.querySelector('Name')?.textContent === "msg_fes:h60b"
-            );
-
-            var dimension = targetLayer?.querySelector('Dimension[name="time"]');
-            var layerTimes = dimension?.textContent;
-            if (layerTimes) {
-                var times = layerTimes.split('/');
-                mostRecentTime = times[times.length - 2].slice(0,16);
-                console.log("Most recent time:", mostRecentTime);
-                eumetsatRGBNaturalColour.setParams({ time: mostRecentTime + ':00.000Z' });
-            }
-        })
-        .catch(() => {});
-}
-
-updateLayerWithMostRecentTime();
-
 mostRecentTime = new Date(new Date().getTime() - 3600000).toISOString().slice(0, 16);
 console.log("Most recent time:", mostRecentTime);
-// for some reason the above function above that is meant to find 'mostRecentTime' is not working so I have to manually input the value, Aadi plz fix this if you can
-// It does fetch the correct time, I have checked this on the console, but it does not update the global variable
-// for now, just manually update it here and it will work.
 
 var lasttime = '2022-12-09T00:45';
 
@@ -139,7 +108,6 @@ var TimeControl = L.Control.extend({
             var newTime = e.target.value + ':00.000Z';
             mostRecentTime = e.target.value; // Update the global variable
             eumetsatRGBNaturalColour.setParams({time: newTime}, false);
-            thunder.setParams({time: newTime}, false);
         };
         return input;
     }
@@ -150,19 +118,11 @@ var eumetsatRGBNaturalColour = new L.tileLayer.wms(`https://view.eumetsat.int/ge
     layers: 'msg_fes:h60b',
     format: 'image/png',
     transparent: true,
-    time: TimeControl.value + ':00.000Z'
-});
-
-var thunder = new L.tileLayer.wms(`https://view.eumetsat.int/geoserver/wms`, {
-    layers: 'msg_fes:rdt',
-    format: 'image/png',
-    transparent: true,
-    time: TimeControl.value + ':00.000Z'
+    time: mostRecentTime + ':00.000Z'
 });
 
 var overlayMaps = {
     "Precipitation - Eumetsat": eumetsatRGBNaturalColour,
-    "Rapidly Developing Thunderstorms - Eumetsat": thunder
 };
 
 
@@ -186,7 +146,7 @@ var CustomControl = L.Control.extend({
 
         // Panel Title
         var panelTitle = L.DomUtil.create('div', 'panel-title', panel);
-        panelTitle.innerHTML = 'Eumetsat Satellite Layers';
+        panelTitle.innerHTML = 'Eumetsat Precipitation';
         
         // Close Button
         var closeButton = L.DomUtil.create('a', 'close-button', panel);
@@ -207,35 +167,36 @@ var CustomControl = L.Control.extend({
             panel.style.display = 'none';
         });
 
-        // Date-Time Picker - Now using TimeControl with the global mostRecentTime
+        // Date-Time Picker 
         var timeControl = new TimeControl();
         panel.appendChild(timeControl.onAdd(map));
 
-        // Overlay Layer Selection - Changed to Dropdown
-        var overlaySelect = L.DomUtil.create('select', 'overlay-map-select', panel);
-        overlaySelect.style.width = '250px'; // Set consistent width
-        var defaultOption = L.DomUtil.create('option', '', overlaySelect);
-        defaultOption.innerHTML = "Select a layer";
-        defaultOption.selected = true;
-        
-        Object.keys(overlayMaps).forEach(function(key) {
-            var option = L.DomUtil.create('option', '', overlaySelect);
-            option.value = key;
-            option.innerHTML = key;
-        });
-        overlaySelect.onchange = this._onOverlayChange.bind(this, map);
-        return container;
-    },
-    _onOverlayChange: function(map, e) {
-        var selectedOverlays = Array.from(e.target.options).filter(option => option.selected).map(option => option.value);
-        Object.keys(overlayMaps).forEach(function(key) {
-            if (selectedOverlays.includes(key)) {
-                map.addLayer(overlayMaps[key]);
-                overlayMaps[key].bringToFront();
+        // Overlay Layer Toggle Button
+        var overlayToggleButton = L.DomUtil.create('button', 'overlay-toggle-button', panel);
+        overlayToggleButton.innerHTML = "Enable";
+        overlayToggleButton.style.width = '250px'; 
+        overlayToggleButton.onclick = function() {
+            if (this.classList.contains('active')) {
+                this.classList.remove('active');
+                this.innerHTML = "Enable";
+                this.style.color = "green"
+                // Logic to disable overlay
+                Object.keys(overlayMaps).forEach(function(key) {
+                    map.removeLayer(overlayMaps[key]);
+                });
             } else {
-                map.removeLayer(overlayMaps[key]);
+                this.classList.add('active');
+                this.innerHTML = "Disable";
+                this.style.color = "red";
+                // Logic to enable overlay
+                Object.keys(overlayMaps).forEach(function(key) {
+                    map.addLayer(overlayMaps[key]);
+                    overlayMaps[key].bringToFront();
+                });
             }
-        });
+        };
+
+        return container;
     }
 });
 map.addControl(new CustomControl({position: 'bottomleft'}));

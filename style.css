@@ -440,6 +440,12 @@ color: olivedrab;
     width: 250px;
 }
 
+.overlay-toggle-button {
+    background-color: white;
+    border: 1px solid #666;
+    border-radius: 2px;
+}
+
 /* .close-button {
     position: absolute;
     top: 10px;
